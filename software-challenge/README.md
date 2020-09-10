@@ -19,4 +19,8 @@ This can all be accomplished with some simple git commands in a shell. If you ru
 
 ## Writing the Code
 
-Finally, for the actual coding part of the challenge, you will have to implement a python class that will be used to keep track of the current position of the hypothetical tunnel boring machine for the "Not-a-Boring" competition. Most of the implementation details will be left to you, and there are python docstrings which outline the parameter and return types
+Finally, for the actual coding part of the challenge, you will have to implement a python class that will be used to keep track of the current position of the hypothetical tunnel boring machine for the "Not-a-Boring" competition. Most of the implementation details will be left to you, and there are python docstrings which outline the parameter and return types. You should be working out of the branch that you created, and periodically "committing" your code using git so that it keeps track of your changes.
+
+## Submitting the Code
+
+Once you have completed the coding section, it is now time to submit your code. To do this, you will submit a "Pull Request" to the github repository. This essentially will begin the process of code review, and in our actual development process this is where changes would be made based off of review comments. After review, the code would then be merged into our master branch. All you will need to do is to open a Pull Request, and provide a small description of your changes, and what they do (assume the reviewer has no prior knowledge of your code!).
