@@ -36,6 +36,8 @@ z-Plane
 """ Class to control position based on GPS input """
 class Navigation:
     def __init__(self, GPS, steering):
+
+        # Instances of the two classes defined below for use to complete the navigation method
         self.GPS = GPS
         self.steering = steering
 
