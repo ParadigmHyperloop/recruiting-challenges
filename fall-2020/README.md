@@ -24,3 +24,62 @@ Finally, for the actual coding part of the challenge, you will have to implement
 ## Submitting the Code
 
 Once you have completed the coding section, it is now time to submit your code. To do this, you will submit a "Pull Request" to the github repository. This essentially will begin the process of code review, and in our actual development process this is where changes would be made based off of review comments. After review, the code would then be merged into our master branch. All you will need to do is to open a Pull Request, and provide a small description of your changes, and what they do (assume the reviewer has no prior knowledge of your code!).
+
+Note: You can also include photos of any workings, and any notes/ideas you had while completing this experiment! Simply add and commit the photo before you create your pull request.
+
+
+## Appendix
+As many of the applicants will not have much experience with OOP (what is that ???), so here are some quick notes! However, I would encourage you to google and or read ahead in your engi 3891 course notes 
+to learn more, these notes are very sparse.
+
+Main Points:
+* OOP - Object Oriented Programming
+* Keep data and ways to interact with that data together 
+* A class is like a blueprint for an object (oftem classes represent real world objects)
+* Can create many instances of a class, with different parameters! 
+* An instance of a class **is** an object.
+
+Example
+```
+class Car(): // Car blueprint!
+    def __init__(self, make, model, max_speed, tire_size, is_coupe):
+        """ Function that every class has - called a constructor! Initializes  the properties of the car, whenc reating an instance of the class - parameters are passed in! """
+        self.make = make
+        self.model = model
+        self.max_speed = max_speed
+        self.tire_size = tire_size
+        self.is_coupe = is_coupe
+        self.speed = 100
+        self.position = 0,0,0
+
+    Below are examples of methods, ways of interacting with the data stored in the class.
+    They are just functions that are defined in a class.
+
+    def accelerate():
+
+    def brake():
+
+    def park()
+
+    def autopilot():
+
+    def activate_cruise():
+
+    def change_tire():
+
+    def activate_vtec():
+
+To create an instance of the class, you simply call the constructor and provide the following arguements" make, model, max_speed, tire_size, is_coupe
+
+Civic = Car("Honda", "Civic", 1000, 20, True)
+
+You can then view the value of the variables in the class, and call methods:
+
+car_name = Civic.name
+car_max_speed = Civic.maxspeed
+
+Civic.drive_forward()
+Civic.park()
+Civic.activate_vtec()
+```
+# GLHF !
