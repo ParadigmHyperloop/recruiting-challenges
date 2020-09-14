@@ -35,7 +35,7 @@ to learn more, these notes are very sparse.
 Main Points:
 * OOP - Object Oriented Programming
 * Keep data and ways to interact with that data together 
-* A class is like a blueprint for an object (oftem classes represent real world objects)
+* A class is like a blueprint for an object (often classes represent real world objects)
 * Can create many instances of a class, with different parameters! 
 * An instance of a class **is** an object.
 
@@ -69,7 +69,7 @@ class Car(): // Car blueprint!
 
     def activate_vtec():
 
-To create an instance of the class, you simply call the constructor and provide the following arguements" make, model, max_speed, tire_size, is_coupe
+To create an instance of the class, you simply call the constructor and provide the following arguments: make, model, max_speed, tire_size, is_coupe
 
 Civic = Car("Honda", "Civic", 1000, 20, True)
 
