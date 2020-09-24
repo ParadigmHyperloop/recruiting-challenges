@@ -131,7 +131,7 @@ class Navigation:
             if statusx == False:
                 print("error for forward moving actuator")
             #shouldn't the move_forward method also take the distance parameter?so that it hows how much to move forward
-        #for y axis    
+        #for x axis    
         if difference_y < 0 :
             statusy = self.steering.move_left(difference_y * (-1))
             if statusy == False:
