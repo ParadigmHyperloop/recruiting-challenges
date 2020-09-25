@@ -13,7 +13,7 @@ In software development, code changes happen a lot, whether it is a new feature,
 
 Along with git itself, there are also multiple hosting services which allow you to store your git repositories (directory containing all the code for your project) on their server, so that multiple developers are able to contribute code simultaneously. Paradigm uses Github for this (you are on our github right now if you're reading this!). For this part of the task, you will have to "clone" our repository to your computer, and then create a "branch" to work out of. In git, each repository has a "master" branch (think like branch on a tree) where the release code lives. When adding features or fixing bugs, a branch is created off of master, code is developed, and then after it is complete, is merged into master. By the end of this part of the challenge, you should have:
  - Cloned our repository to your computer
- - Created a branch to work out of - You can name your branch like this: "feature/*team number*/recruitment-challenge"
+ - Created a branch to work out of - You can name your branch like this: "feature/*name*/fall2020/recruitment-challenge"
 
 This can all be accomplished with some simple git commands in a shell. If you run into trouble, do what Software Developers do all the time and consult google, and [Stack Overflow](https://stackoverflow.com/).
 
@@ -24,6 +24,8 @@ Finally, for the actual coding part of the challenge, you will have to implement
 ## Submitting the Code
 
 Once you have completed the coding section, it is now time to submit your code. To do this, you will submit a "Pull Request" to the github repository. This essentially will begin the process of code review, and in our actual development process this is where changes would be made based off of review comments. After review, the code would then be merged into our master branch. All you will need to do is to open a Pull Request, and provide a small description of your changes, and what they do (assume the reviewer has no prior knowledge of your code!).
+
+Note: Make sure to format your pull request title as follows: "name/fall2020/recruitment-challenge/submission"
 
 Note: You can also include photos of any workings, and any notes/ideas you had while completing this experiment! Simply add and commit the photo before you create your pull request.
 
