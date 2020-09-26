@@ -70,6 +70,9 @@ class Navigation:
         Note: assume the user will pass in the desired_position parameter when using
         the interface 
         """
+
+        self.desired_position = desired_position
+
         pass
 
     
