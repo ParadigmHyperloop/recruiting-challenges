@@ -78,6 +78,9 @@ class Navigation:
     
     def update_current_position(self):
         """ Updates the current position of the TBM """
+        GPS.pollSensor
+        self.current_position = GPS.getPos
+        
         pass
 
 
