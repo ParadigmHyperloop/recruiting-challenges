@@ -70,12 +70,13 @@ class Navigation:
         Note: assume the user will pass in the desired_position parameter when using
         the interface 
         """
-        pass
+        self.desired_position = desired_position
 
     
     def update_current_position(self):
         """ Updates the current position of the TBM """
-        pass
+        self.GPS.pollsensor()
+        self.current_position = self.GPS.getPos()
 
 
     def navigate(self):
@@ -87,7 +88,85 @@ class Navigation:
         Returns: True if actuation requests were successful, False if not
         Note: It may be good to notify the user if something unexpected happens!
         """
-        pass
+        # Getting current position of the TBM.
+        self.update_current_position()
+
+        if self.current_position == self.desired_position:
+            print("Current position is already at desired position.")
+            return True
+
+        # Looping through and comparing each corresponding coordinate in the two position tuples.
+        for coordinate_index in range(3):
+            # If x => check if TBM is behind, if y => check if TBM is left, if z => check if TBM is below.
+            if self.current_position[coordinate_index] < self.desired_position[coordinate_index]:
+                # Distance between the two corresponding x, y, or z values.
+                steer_distance = self.desired_position[coordinate_index] - self.current_position[coordinate_index]
+
+                # x value.
+                if coordinate_index == 0:
+                    if self.steering.move_forward():
+                        print("Actuation successful.")
+
+                    else:
+                        print("Forward actuation unsuccessful.")
+
+                # y value.
+                elif coordinate_index == 1:
+                    if self.steering.move_right(steer_distance):
+                        print("Actuation successful.")
+
+                    else:
+                        print("Right actuation unsuccessful.")
+
+                # z value.
+                elif coordinate_index == 2:
+                    if self.steering.move_up(steer_distance):
+                        print("Actuation successful.")
+
+                    else:
+                        print("Up actuation unsuccessful.")
+
+            # If x => check if TBM is in front, if y => check if TBM is right, if z => check if TBM is above.
+            elif self.current_position[coordinate_index] > self.desired_position[coordinate_index]:
+                steer_distance = self.current_position[coordinate_index] - self.desired_position[coordinate_index]
+
+                if coordinate_index == 0:
+                    print("Unexpected input for x coordinate. Should be behind target not in front of target.")
+
+                elif coordinate_index == 1:
+                    if self.steering.move_left(steer_distance):
+                        print("Actuation successful.")
+
+                    else:
+                        print("Left actuation unsuccessful.")
+
+                elif coordinate_index == 2:
+                    if self.steering.move_down(steer_distance):
+                        print("Actuation successful.")
+
+                    else:
+                        print("Down actuation unsuccessful.")
+
+        # Getting new current position of the TBM.
+        self.update_current_position()
+
+        if self.current_position == self.desired_position:
+            if self.steering.stop():
+                print("Stop successful. All actuation's successful.")
+                return True
+
+            else:
+                print("All actuation's successful but failed to stop.")
+                return False
+
+        else:
+            if self.steering.stop():
+                print("Actuation's unsuccessful desired destination not reached.")
+                return False
+
+            else:
+                print("Actuation's unsuccessful and failed to stop.")
+                return False
 
 
 # Code below is provided for you, YOU DO NOT NEED TO IMPLEMENT THIS
