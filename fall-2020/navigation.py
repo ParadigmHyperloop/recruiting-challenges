@@ -101,6 +101,7 @@ class Navigation:
                 desired_position_tuple = desired_position_tuple + updater_tuple
             self.set_desired_position(desired_position_tuple)
             self.navigate
+            return
         #error checking for if the x given coordinate  is already behind the machine or not
         if self.current_position(0) > self.desired_position(0): 
             print("desired position for x axis is behind the TBM ,please put x coordinate which is infront of TBM \n")
@@ -113,10 +114,13 @@ class Navigation:
                 desired_position_tuple = desired_position_tuple + updater_tuple
             self.set_desired_position(desired_position_tuple)
             self.navigate
+            return
             
         targetreached = False
         while targetreached != True :
             #should add a pausing mechanism to let actuators take input and implement movement before checking new position and distance left to move using time.sleep(.) 
+            #confused about whether the steering methods return true if full movement to desired location complete or only if movement started and movement distance is given
+            #if steering methods return true after their full movement completed ,then loop is not required .
             self.update_current_position()
             #differences between the coordinates is calculated
             difference_x = self.desired_position(0) - self.current_position(0)
