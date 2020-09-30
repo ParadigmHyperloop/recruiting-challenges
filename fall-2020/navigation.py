@@ -85,42 +85,49 @@ class Navigation:
 
 
     def navigate(self):
-        """ Navigate to the desired position from the current position
-        
-        Based on the current position tuple, compared to the desired position tuple,
-        make decisions on steering, and ensure that the actuations are successful
 
-        Returns: True if actuation requests were successful, False if not
-        Note: It may be good to notify the user if something unexpected happens!
-        """
+        """ Assumption: If any actuation is unsuccessful, the TBM will stop moving"""
+
+        """ These boolean values will indicate whether or not the actuations were suucessful."""
         act_request_forward = True
-        act_request_right = True
-        act_request_left = True
-        act_request_up = True
-        act_request_down = True
+        act_request_right   = True
+        act_request_left    = True
+        act_request_up      = True
+        act_request_down    = True
 
-        if desired_position[0] > current_position[0]:
+
+        """"The TBM will move forward as long as the current position is not
+        equal to the desired position in the x direction. """
+        if desired_position[0] != 0:
             while(current_position[0] != desired_position[0]):
                 act_request_forward = Steering.move_forward()
                 self.update_current_position
                 if act_request_forward == False:
                     print("Unable to move to desired x position")
-        
+                    self.update_current_position
+                    return current_position == desired_position
+
+
         required_y_distance = desired_position[1] - current_position[1]
         if required_y_distance > 0:
             act_request_right = Steering.move_right(required_y_distance)
         elif required_y_distance < 0:
             act_request_left = Steering.move_left(required_y_distance)
-        if act_request_left or act_request_left == False:
+        if act_request_left == False or act_request_right == False:
             print("Unable to move to desired y position")
+            self.update_current_position
+            return current_position == desired_position
+            
             
         required_z_distance = desired_position[2] - current_position[2]
         if required_z_distance > 0:
             act_request_up = Steering.move_up(required_z_distance)
         elif required_z_distance < 0:
             act_request_down = Steering.move_down(required_z_distance)        
-        if act_request_up or act_request_down == False:
-            print("Unable to move to desired z position")       
+        if act_request_up == False or act_request_down == False:
+            print("Unable to move to desired z position") 
+            self.update_current_position
+            return current_position == desired_position      
 
         self.update_current_position
         return current_position == desired_position
