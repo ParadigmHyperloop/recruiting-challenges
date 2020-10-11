@@ -66,20 +66,53 @@ class Navigation:
 
     def set_desired_position(self, desired_position):
         """ Sets the desired position the TBM will attempt to move to.
-        
+
         Note: assume the user will pass in the desired_position parameter when using
         the interface 
         """
-        pass
+        self.desired_position = desired_position
+        return 0
 
     
     def update_current_position(self):
         """ Updates the current position of the TBM """
-        pass
+        self.current_position = self.GPS.getPos()
+        return 0
 
 
     def navigate(self):
-        #test pass
+        #tuple to store where to travel
+        x,y,z = self.desired_position-self.current_position
+
+        #looping through XYZ movement
+        if x > 0:
+            self.steering.move_forward()
+        else:
+            self.steering.stop()
+
+        if y == 0:
+            pass
+        elif y > 0:
+            self.steering.move_right(y)
+        elif y < 0:
+            y = abs(y)
+            self.steering.move_left(y)
+
+        if z == 0:
+            pass
+        elif z > 0:
+            self.steering.move_up(z)
+        elif z < 0:
+            z = abs(z)
+            self.steering.move_down(z)
+
+        self.update_current_position()
+
+        if self.current_position == self.desired_position:
+            return True
+        else:
+            return False
+
         """ Navigate to the desired position from the current position
         
         Based on the current position tuple, compared to the desired position tuple,
@@ -88,7 +121,6 @@ class Navigation:
         Returns: True if actuation requests were successful, False if not
         Note: It may be good to notify the user if something unexpected happens!
         """
-        pass
 
 
 # Code below is provided for you, YOU DO NOT NEED TO IMPLEMENT THIS
