@@ -131,7 +131,8 @@ class Navigation:
                 steer_distance = self.current_position[coordinate_index] - self.desired_position[coordinate_index]
 
                 if coordinate_index == 0:
-                    print("Unexpected input for x coordinate. Should be behind target not in front of target.")
+                    raise ValueError("Unexpected input for x coordinate. "
+                        "Should be behind target not in front of target.")
 
                 elif coordinate_index == 1:
                     if self.steering.move_left(steer_distance):
