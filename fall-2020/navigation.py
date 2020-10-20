@@ -69,6 +69,8 @@ class Navigation:
         self.desired_position = desired_position
         #we could call the naviagte function here to start movement as soon as desired position given
         #self.navigate()
+        #As per feedback I think I will keep it like a setter method only for now and maybe later make it call self.navigate if i think that will be better,for which i will change the method name
+
         
 
     
@@ -89,6 +91,7 @@ class Navigation:
         """
         #checking if current postion and desired position are same and if same then prompting to input new values and calling navigate again
         #if both positions are same then we could either take new input and run navigate again like shown below or we could return an error status like the boolean values for actuatuion requests as mentioned above.
+        #As per feedback I think in place of only returning an error for now I will allow the user to input a new coordinate for desired position which also sends him an error message
         if self.current_position == self.desired_position :
             print("TBM is already at desired position or desired position not set,please set new desired position \n")
             coordinate = input ("please input desired coordinate in the following form: ' x , y , z ' \n")
@@ -96,83 +99,74 @@ class Navigation:
             coordinate.replace(" ","")
             desired_coordinate_list = coordinate.split(",")
             desired_position_tuple = ()
-            for number_of_coordinates in range(3):
-                updater_tuple = (desired_coordinate_list[number_of_coordinates],)
-                desired_position_tuple = desired_position_tuple + updater_tuple
+            for number_of_coordinates in range(2):
+                #As per feedback I used a generator expression
+                desired_position_tuple = tuple(coordinate for coordinate in desired_coordinate_list)
             self.set_desired_position(desired_position_tuple)
-            self.navigate
+            self.navigate()
             return
         #error checking for if the x given coordinate  is already behind the machine or not
-        if self.current_position(0) > self.desired_position(0): 
+        if self.current_position[0] > self.desired_position[0]: 
             print("desired position for x axis is behind the TBM ,please put x coordinate which is infront of TBM \n")
             coordinate = input ("please input desired coordinate in the following form: ' x , y , z ' \n")
             coordinate.replace(" ","")
             desired_coordinate_list = coordinate.split(",")
             desired_position_tuple = ()
-            for number_of_coordinates in range(3):
-                updater_tuple = (desired_coordinate_list[number_of_coordinates],)
-                desired_position_tuple = desired_position_tuple + updater_tuple
+            for number_of_coordinates in range(2):
+                #As per feedback I used a generator expression
+                desired_position_tuple = tuple(coordinate for coordinate in desired_coordinate_list)
             self.set_desired_position(desired_position_tuple)
-            self.navigate
+            self.navigate()
             return
             
-        targetreached = False
-        while targetreached != True :
-            #should add a pausing mechanism to let actuators take input and implement movement before checking new position and distance left to move using time.sleep(.) 
-            #confused about whether the steering methods return true if full movement to desired location complete or only if movement started and movement distance is given
-            #if steering methods return true after their full movement completed ,then loop is not required .
-            self.update_current_position()
-            #differences between the coordinates is calculated
-            difference_x = self.desired_position(0) - self.current_position(0)
-            difference_y = self.desired_position(1) - self.current_position(1)
-            difference_z = self.desired_position(2) - self.current_position(2)
-
-            #checking each axis for which direction to move:front,right and above are taken to be positive while their opposite directions are taken as negative 
-            #for the x axis
-            if difference_x == 0:
-                pass
-            else:
-                statusx = self.steering.move_forward()
-                if statusx == False:
-                    print("error for forward moving actuator")
-                    return False
-                #shouldn't the move_forward method also take the distance parameter?so that it hows how much to move forward
-            #for x axis    
-            if difference_y < 0 :
-                statusy = self.steering.move_left(difference_y * (-1))
-                if statusy == False:
-                    print("error in left moving actuator")
-                    return False
-            elif difference_y > 0:
-                statusy = self.steering.move_right(difference_y)
-                if statusy == False:
-                    print("error in right moving actuator")
-                    return False
-            else:
-                pass
-            #for the z axis
-            if difference_z < 0 :
-                statusz = self.steering.move_down(difference_z * (-1))
-                if statusz == False:
-                    print("error in down moving actuator")
-                    return False
-            elif difference_z > 0:
-                statusz = self.steering.move_up(difference_z)
-                if statusz == False :
-                    print("error in up moving actuator")
-                    return False
-            else:
-                pass
-            #for stopping
-            if difference_y == 0 and difference_x == 0 and difference_z == 0 :
-                targetreached =  True
-                status_stop = self.steering.stop()
-                if status_stop == True:
-                    print ("navigation successful")
-                    return True
-                elif status_stop == False:
-                    print("motor has not stopped")
-                    return False
+        self.update_current_position()
+        #differences between the coordinates is calculated
+        difference_x = self.desired_position[0] - self.current_position[0]
+        difference_y = self.desired_position[1] - self.current_position[1]
+        difference_z = self.desired_position[2] - self.current_position[2]
+        #checking each axis for which direction to move:front,right and above are taken to be positive while their opposite directions are taken as negative 
+        #for the x axis
+        if difference_x != 0:
+            statusx = self.steering.move_forward()
+            if statusx == False:
+                print("error for forward moving actuator")
+                return False
+            #shouldn't the move_forward method also take the distance parameter?so that it hows how much to move forward
+            #as per feedback  i think i will leave it as initially intended and maybe change it later if that seems better
+        #for x axis    
+        if difference_y < 0 :
+            statusy = self.steering.move_left(-difference_y)
+            if statusy == False:
+                print("error in left moving actuator")
+                return False
+        elif difference_y > 0:
+            statusy = self.steering.move_right(difference_y)
+            if statusy == False:
+                print("error in right moving actuator")
+                return False
+        #for the z axis
+        if difference_z < 0 :
+            statusz = self.steering.move_down(-difference_z)
+            if statusz == False:
+                print("error in down moving actuator")
+                return False
+        elif difference_z > 0:
+            statusz = self.steering.move_up(difference_z)
+            if statusz == False :
+                print("error in up moving actuator")
+                return False
+        #for stopping
+        #I changed the condition from checking with distance difference to statuses of the actuators
+        if statusx == True and statusy == True and statusz == True :
+            targetreached =  True
+            print ("destination reached")
+            status_stop = self.steering.stop()
+            if status_stop == True:
+                print ("navigation successful")
+                return True
+            elif status_stop == False:
+                print("motor has not stopped")
+                return False
 
     
 
