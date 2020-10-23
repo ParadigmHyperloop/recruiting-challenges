@@ -118,7 +118,7 @@ class Navigation:
             x_act = self.steering.move_forward(x)
 
         else:
-            x_act = True
+            x_act = self.steering.stop()
         
         #Next check the y component and attempt actuation
         if (y > 0):
@@ -128,7 +128,7 @@ class Navigation:
             y_act = self.steering.move_left(y)
 
         else:
-            y_act = True
+            y_act = self.steering.stop()
 
         #Lastly, check the z component and attempt actuation
         if (z > 0):
@@ -138,7 +138,7 @@ class Navigation:
             z_act = self.steering.move_down(z)
 
         else:
-            z_act = True
+            z_act = self.steering.stop()
 
         #Check if all actuations were successful! Return True if all were successful.
         if x_act and y_act and z_act == True:
