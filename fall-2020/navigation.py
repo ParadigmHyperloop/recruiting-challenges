@@ -70,12 +70,18 @@ class Navigation:
         Note: assume the user will pass in the desired_position parameter when using
         the interface 
         """
-        pass
+        #This sets the desired position to the value passed by the user when they use the UI
+
+        self.desired_position = desired_position
 
     
     def update_current_position(self):
         """ Updates the current position of the TBM """
-        pass
+
+        #This updates the current position
+
+        self.current_position = self.GPS.getPos()
+
 
 
     def navigate(self):
@@ -87,9 +93,82 @@ class Navigation:
         Returns: True if actuation requests were successful, False if not
         Note: It may be good to notify the user if something unexpected happens!
         """
-        pass
+
+        #Evaluate the differences of each position for x, y, and z
+
+        x = self.desired_position[0] - self.current_position[0]
+        y = self.desired_position[1] - self.current_position[1]
+        z = self.desired_position[2] = self.current_position[2]
+
+        """ The subsequent flow control follows the same format (until line 127). 
+
+        First it checks where the TBM is in relation to the target, such that if it is
+        behind it, to the left of it, to the right of it, above it, or below the target.
+
+        Based on the assessment for each difference for (x, y, z), it attempts to execute a movement,
+        then checks if the actuation was succesful! (Storing the bool value for x_act, y_act, z_act...)
+        
+        It is also important to note that the difference in x or y or z == 0, assume the actuation
+        was successful for that coordinate, as you would not need to steer in a direction!
+        """
 
 
+        #First check the x component and attempt actuation
+        if (x > 0):
+            x_act = self.steering.move_forward(x)
+
+        else:
+            x_act = self.steering.stop()
+        
+        #Next check the y component and attempt actuation
+        if (y > 0):
+            y_act = self.steering.move_right(y)
+
+        elif (y < 0):
+            y_act = self.steering.move_left(y)
+
+        else:
+            y_act = self.steering.stop()
+
+        #Lastly, check the z component and attempt actuation
+        if (z > 0):
+            z_act = self.steering.move_up(z)
+
+        elif (z < 0):
+            z_act = self.steering.move_down(z)
+
+        else:
+            z_act = self.steering.stop()
+
+        #Check if all actuations were successful! Return True if all were successful.
+        if x_act and y_act and z_act == True:
+            
+            print("All actuations were successful :D")
+
+            return True
+        
+        #Next check all the actuations and print out to the user where TBM is running into errors for either x, y, or z.
+        if not x_act:
+
+            print("Something went wrong with the actuation moving in the x-direction!")
+            
+
+        if not y_act:
+
+            print("Something went wrong with the actuation moving in the y-direction!")
+
+            
+
+        if not z_act:
+
+            print("Something went wrong with the actuation moving in the z-direction!")
+
+        #If not all of the actuations were successful, return False
+        
+        return False
+
+
+    
 # Code below is provided for you, YOU DO NOT NEED TO IMPLEMENT THIS
    
 class GPS:
