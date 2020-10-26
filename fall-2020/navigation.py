@@ -32,27 +32,27 @@ z-Plane
     |
     |
     below target
-    
+
 Misc:
     TBM - Tunnel Boring Machine
 """
 
 # Implement this class - this code will not actually be run, it is more of a thought exercise!
 class Navigation:
-    """ Class to control position based on GPS input 
-    
+    """ Class to control position based on GPS input
+
     Attributes:
         GPS - GPS Interface object, used to obtain GPS coordinates
         steering - Steering object
         current_position - The current position of the TBM in 3-D space (x, y, z)
         desired_position - The desired position of the TBM in 3-D space (x, y, z)
-    
+
     Methods:
-        set_desired_position() 
-        update_current_position()  
+        set_desired_position()
+        update_current_position()
         navigate()
     """
-    
+
     def __init__(self, GPS, steering):
 
         # Instances of the two classes defined below for use to complete the navigation method
@@ -62,39 +62,85 @@ class Navigation:
         # These will be tuples of the form (x, y, z)
         self.current_position = None
         self.desired_position = None
-    
+
 
     def set_desired_position(self, desired_position):
         """ Sets the desired position the TBM will attempt to move to.
-        
+
         Note: assume the user will pass in the desired_position parameter when using
-        the interface 
+        the interface
         """
+        self.desired_position = desired_position
         pass
 
-    
+
     def update_current_position(self):
         """ Updates the current position of the TBM """
+        self.current_position = self.GPS.getPos()
         pass
 
 
     def navigate(self):
         """ Navigate to the desired position from the current position
-        
+
         Based on the current position tuple, compared to the desired position tuple,
         make decisions on steering, and ensure that the actuations are successful
 
         Returns: True if actuation requests were successful, False if not
         Note: It may be good to notify the user if something unexpected happens!
         """
+        currentX, currentY, currentZ = current_position
+        wantedX, wantedY, wantedZ = desired_position
+
+        moveX = wantedX - currentX
+        moveY = wantedY - currentY
+        moveZ = wantedZ - currentZ
+
+        success = true
+
+        # Assume all move commands with distance esentially finish instintaniously and
+        # place the drill in the correct location
+        if moveY > 0:
+            success = self.steering.move_right(moveY)
+            if !success:
+                print("Move right did not execute properly") # print used as a substitute for any place that we'd want to print to
+                return success
+        else:
+            success = self.steering.move_left(-moveY)
+            if !success:
+                print("Move left did not execute properly")
+                return success
+
+        if moveZ > 0:
+            success = self.steering.move_up(moveZ)
+            if !success:
+                print("Move up did not execute properly")
+                return success
+        else:
+            success = self.steering.move_down(-moveZ)
+            if !success:
+                print("Move down did not execute properly")
+                return success
+
+        # Assume it only has to move forward in the X direction.
+        if self.current_position != self.desired_position:
+            success = self.steering.move_forward()
+            if !success:
+                print("Move forward did not execute properly")
+                return success
+
+        while self.current_position != self.desired_position:
+            self.update_current_position()
+
+        self.steering.stop()
         pass
 
 
 # Code below is provided for you, YOU DO NOT NEED TO IMPLEMENT THIS
-   
+
 class GPS:
     """ Mock GPS sensor interface class """
-    
+
     def __init__(self, GPSSensor):
         self.GPS = GPSSensor
         self.x = GPSSensor.pos.x
@@ -107,8 +153,8 @@ class GPS:
         Updates the current position by reading the gps sensor
         """
         self.x, self.y, self.z = self.GPS.read()
-    
-   
+
+
     def getPos(self):
         """ Returns the TBM position """
         return self.x, self.y, self.z
@@ -116,7 +162,7 @@ class GPS:
 
 class Steering:
     """ Interfaces with the actuator which steers the TBM, and controls its speed 
-    
+
     Attributes:
         act - Placeholder actuation component (could be a motor for example, or some other actuator related to steering)
 
@@ -128,7 +174,7 @@ class Steering:
         move_forward()
         stop()
     """
-    
+
     def __init__(self, actuation_component):
         self.act = actuation_component
 
@@ -139,7 +185,7 @@ class Steering:
         Returns: True if the actuation is successful, False if it is not
         """
         return self.act.steer_left(left_distance)
-        
+
     def move_right(self, right_distance):
         """ Steers the TBM to the right
 
@@ -147,7 +193,7 @@ class Steering:
         """
         return self.act.steer_right(right_distance)
 
-    def move_down(self, down_distance): 
+    def move_down(self, down_distance):
         """ Steers the TBM down
 
         Returns: True if the actuation is successful, False if it is not
@@ -177,4 +223,4 @@ class Steering:
         Returns: True if the motor stops the TBM, False if it does not
         """
         return self.act.stop()
-    
+
