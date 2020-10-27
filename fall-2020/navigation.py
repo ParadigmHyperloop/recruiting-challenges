@@ -52,7 +52,6 @@ class Navigation:
         update_current_position()  
         navigate()
     """
-    
     def __init__(self, GPS, steering):
 
         # Instances of the two classes defined below for use to complete the navigation method
@@ -62,7 +61,6 @@ class Navigation:
         # These will be tuples of the form (x, y, z)
         self.current_position = None
         self.desired_position = None
-    
 
     def set_desired_position(self, desired_position):
         """ Sets the desired position the TBM will attempt to move to.
@@ -72,12 +70,10 @@ class Navigation:
         """
         self.desired_position = desired_position
 
-    
     def update_current_position(self):
         """ Updates the current position of the TBM """
         self.GPS.pollsensor()
         self.current_position = self.GPS.getPos()
-
 
     def navigate(self):
         """ Navigate to the desired position from the current position
@@ -106,7 +102,6 @@ class Navigation:
                 if coordinate_index == 0:
                     if self.steering.move_forward():
                         print("Actuation successful.")
-
                     else:
                         print("Forward actuation unsuccessful.")
 
@@ -114,7 +109,6 @@ class Navigation:
                 elif coordinate_index == 1:
                     if self.steering.move_right(steer_distance):
                         print("Actuation successful.")
-
                     else:
                         print("Right actuation unsuccessful.")
 
@@ -122,7 +116,6 @@ class Navigation:
                 elif coordinate_index == 2:
                     if self.steering.move_up(steer_distance):
                         print("Actuation successful.")
-
                     else:
                         print("Up actuation unsuccessful.")
 
@@ -137,14 +130,12 @@ class Navigation:
                 elif coordinate_index == 1:
                     if self.steering.move_left(steer_distance):
                         print("Actuation successful.")
-
                     else:
                         print("Left actuation unsuccessful.")
 
                 elif coordinate_index == 2:
                     if self.steering.move_down(steer_distance):
                         print("Actuation successful.")
-
                     else:
                         print("Down actuation unsuccessful.")
 
@@ -155,7 +146,6 @@ class Navigation:
             if self.steering.stop():
                 print("Stop successful. All actuation's successful.")
                 return True
-
             else:
                 print("All actuation's successful but failed to stop.")
                 return False
@@ -164,14 +154,12 @@ class Navigation:
             if self.steering.stop():
                 print("Actuation's unsuccessful desired destination not reached.")
                 return False
-
             else:
                 print("Actuation's unsuccessful and failed to stop.")
                 return False
 
 
 # Code below is provided for you, YOU DO NOT NEED TO IMPLEMENT THIS
-   
 class GPS:
     """ Mock GPS sensor interface class """
     
@@ -187,8 +175,7 @@ class GPS:
         Updates the current position by reading the gps sensor
         """
         self.x, self.y, self.z = self.GPS.read()
-    
-   
+
     def getPos(self):
         """ Returns the TBM position """
         return self.x, self.y, self.z
@@ -212,7 +199,6 @@ class Steering:
     def __init__(self, actuation_component):
         self.act = actuation_component
 
-
     def move_left(self, left_distance):
         """ Steers the TBM left
 
@@ -234,7 +220,6 @@ class Steering:
         """
         return self.act.steer_down(down_distance)
 
-
     def move_up(self, up_distance):
         """ Steers the TBM to the right
 
@@ -242,14 +227,12 @@ class Steering:
         """
         return self.act.steer_up(up_distance)
 
-
     def move_forward(self):
         """ Moves the TBM forward
 
         Returns: True if the motor sucessfully moves the TBM, False if it is not
         """
         return self.act.forward()
-
 
     def stop(self):
         """ Stops the TBM from moving
