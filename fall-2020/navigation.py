@@ -91,7 +91,7 @@ class Navigation:
         # Calculating individual coordinate distances
         x_dist = self.desired_position[0] - self.current_position[0]
         y_dist = self.desired_position[1] - self.current_position[1]
-        z_dist = self.desired_position[2] - self.desired_position[2]
+        z_dist = self.desired_position[2] - self.current_position[2]
 
         # Checking for the desired actuations
         if(x_dist > 0):
