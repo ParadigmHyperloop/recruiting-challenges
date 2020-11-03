@@ -88,43 +88,47 @@ class Navigation:
         Note: It may be good to notify the user if something unexpected happens!
         """
 
-        #Calculating individual coordinate distances
+        # Calculating individual coordinate distances
         x_dist = self.desired_position[0] - self.current_position[0]
         y_dist = self.desired_position[1] - self.current_position[1]
         z_dist = self.desired_position[2] - self.desired_position[2]
 
-        #Checking for the desired actuations
+        # Checking for the desired actuations
         if(x_dist > 0):
             if(not self.steering.move_forward(x_dist)):
                 print(
                     "Error occured while performing x-direction forward movement!")
                 return False
 
-        #It is necessary to update the current position after encountering an error past this point just to make sure the previous actuations are recorded.
+        # It is necessary to stop the TBM and update the current position after encountering an error past this point just to make sure the previous actuations are recorded.
         if(y_dist > 0):
             if(not self.steering.move_left(y_dist)):
+                self.steering.stop()
                 print(
                     "Error occured while performing y-direction left steering!")
-                    self.update_current_position()
+                self.update_current_position()
                 return False
         elif(y_dist < 0):
             if(not self.steering.move_right(y_dist)):
+                self.steering.stop()
                 print(
                     "Error occured while performing y-direction right steering!")
-                    self.update_current_position()
+                self.update_current_position()
                 return False
         if(z_dist > 0):
             if(not self.steering.move_up(z_dist)):
+                self.steering.stop()
                 print("Error occured while moving up!")
                 self.update_current_position()
                 return False
         elif(z_dist < 0):
             if(not self.steering.move_down(z_dist)):
+                self.steering.stop()
                 print("Error occured while moving down!")
                 self.update_current_position()
                 return False
 
-        #When actuations are complete, stopping the TBM and updating the current position for the next navigation commands.
+        # When actuations are complete, stopping the TBM and updating the current position for the next navigation commands.
         self.steering.stop()
         self.update_current_position()
 
