@@ -105,6 +105,8 @@ class Navigation:
         if(y_dist > 0):
             if(not self.steering.move_left(y_dist)):
                 stop_result = self.steering.stop()
+                if(not stop_result):
+                    print("Error occured while stopping the TBM!")
                 print(
                     "Error occured while performing y-direction left steering!")
                 self.update_current_position()
@@ -112,6 +114,8 @@ class Navigation:
         elif(y_dist < 0):
             if(not self.steering.move_right(y_dist)):
                 stop_result = self.steering.stop()
+                if(not stop_result):
+                    print("Error occured while stopping the TBM!")
                 print(
                     "Error occured while performing y-direction right steering!")
                 self.update_current_position()
@@ -119,12 +123,16 @@ class Navigation:
         if(z_dist > 0):
             if(not self.steering.move_up(z_dist)):
                 stop_result = self.steering.stop()
+                if(not stop_result):
+                    print("Error occured while stopping the TBM!")
                 print("Error occured while moving up!")
                 self.update_current_position()
                 return False
         elif(z_dist < 0):
             if(not self.steering.move_down(z_dist)):
                 stop_result = self.steering.stop()
+                if(not stop_result):
+                    print("Error occured while stopping the TBM!")
                 print("Error occured while moving down!")
                 self.update_current_position()
                 return False
