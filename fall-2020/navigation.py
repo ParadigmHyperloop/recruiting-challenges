@@ -101,7 +101,7 @@ class Navigation:
                 return False
 
         # It is necessary to stop the TBM and update the current position after encountering an error past this point just to make sure the previous actuations are recorded.
-        # Assuming, the TBM is moving on positive X-directon, the left side of TBM must be positive Y-axis and the right must be the negative.
+        # Assuming, the TBM is moving along the positive X-directon, the left side of TBM must be the positive Y-axis and the right must be the negative.
         if(y_dist > 0):
             if(not self.steering.move_left(y_dist)):
                 self.steering.stop()
