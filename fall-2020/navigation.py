@@ -90,15 +90,12 @@ class Navigation:
         Note: It may be good to notify the user if something unexpected happens!
         """
 
-        # distance_left = ((self.desired_position[0]-self.current_position[0])**2 +
-        # (self.desired_position[1]-self.current_position[1])**2 +
-        # (self.desired_position[2]-self.current_position[2])**2)**(1/2)
-        #
-
+        #Calculating individual coordinate distances
         x_dist = self.desired_position[0] - self.current_position[0]
         y_dist = self.desired_position[1] - self.current_position[1]
         z_dist = self.desired_position[2] - self.desired_position[2]
 
+        #Checking for the desired actuations
         if(x_dist > 0):
             if(not self.steering.move_forward(x_dist)):
                 print(
@@ -123,6 +120,7 @@ class Navigation:
                 print("Error occured while moving down!")
                 return False
 
+        #When actuations are complete, stopping the TBM and updating the current position for the next navigation commands.
         self.steering.stop()
         self.update_current_position()
 
