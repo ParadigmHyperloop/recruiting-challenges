@@ -104,37 +104,42 @@ class Navigation:
         # Assuming, the TBM is moving along the positive X-directon, the left side of TBM must be the positive Y-axis and the right must be the negative.
         if(y_dist > 0):
             if(not self.steering.move_left(y_dist)):
-                stop_result = self.steering.stop()
-                if(not stop_result):
-                    print("Error occured while stopping the TBM!")
                 print(
                     "Error occured while performing y-direction left steering!")
-                self.update_current_position()
+                stop_result = self.steering.stop()
+                # if cannot stop
+                if(not stop_result):
+                    print("Error occured while stopping the TBM!")
+                else:
+                    self.update_current_position()
                 return False
         elif(y_dist < 0):
             if(not self.steering.move_right(y_dist)):
+                print(
+                    "Error occured while performing y-direction right steering!")
                 stop_result = self.steering.stop()
                 if(not stop_result):
                     print("Error occured while stopping the TBM!")
-                print(
-                    "Error occured while performing y-direction right steering!")
-                self.update_current_position()
+                else:
+                    self.update_current_position()
                 return False
         if(z_dist > 0):
             if(not self.steering.move_up(z_dist)):
+                print("Error occured while moving up!")
                 stop_result = self.steering.stop()
                 if(not stop_result):
                     print("Error occured while stopping the TBM!")
-                print("Error occured while moving up!")
-                self.update_current_position()
+                else:
+                    self.update_current_position()
                 return False
         elif(z_dist < 0):
             if(not self.steering.move_down(z_dist)):
+                print("Error occured while moving down!")
                 stop_result = self.steering.stop()
                 if(not stop_result):
                     print("Error occured while stopping the TBM!")
-                print("Error occured while moving down!")
-                self.update_current_position()
+                else:
+                    self.update_current_position()
                 return False
 
         # When actuations are complete, stopping the TBM and updating the current position for the next navigation commands.
