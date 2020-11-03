@@ -72,13 +72,11 @@ class Navigation:
         the interface
         """
         self.desired_position = desired_position
-        pass
 
     def update_current_position(self):
         """ Updates the current position of the TBM """
         self.GPS.pollSensor()
         self.current_position = (self.GPS.x, self.GPS.y, self.GPS.z)
-        pass
 
     def navigate(self):
         """ Navigate to the desired position from the current position
@@ -101,23 +99,29 @@ class Navigation:
                 print(
                     "Error occured while performing x-direction forward movement!")
                 return False
+
+        #It is necessary to update the current position after encountering an error past this point just to make sure the previous actuations are recorded.
         if(y_dist > 0):
             if(not self.steering.move_left(y_dist)):
                 print(
                     "Error occured while performing y-direction left steering!")
+                    self.update_current_position()
                 return False
         elif(y_dist < 0):
             if(not self.steering.move_right(y_dist)):
                 print(
                     "Error occured while performing y-direction right steering!")
+                    self.update_current_position()
                 return False
         if(z_dist > 0):
             if(not self.steering.move_up(z_dist)):
                 print("Error occured while moving up!")
+                self.update_current_position()
                 return False
         elif(z_dist < 0):
             if(not self.steering.move_down(z_dist)):
                 print("Error occured while moving down!")
+                self.update_current_position()
                 return False
 
         #When actuations are complete, stopping the TBM and updating the current position for the next navigation commands.
