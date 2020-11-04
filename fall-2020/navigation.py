@@ -63,31 +63,68 @@ class Navigation:
         self.current_position = None
         self.desired_position = None
     
-
     def set_desired_position(self, desired_position):
         """ Sets the desired position the TBM will attempt to move to.
         
         Note: assume the user will pass in the desired_position parameter when using
         the interface 
         """
-        pass
-
+        self.desired_position = desired_position
     
     def update_current_position(self):
         """ Updates the current position of the TBM """
-        pass
-
+        GPS.pollSensor()
+        self.current_position = GPS.getPos()
 
     def navigate(self):
-        """ Navigate to the desired position from the current position
-        
-        Based on the current position tuple, compared to the desired position tuple,
-        make decisions on steering, and ensure that the actuations are successful
 
-        Returns: True if actuation requests were successful, False if not
-        Note: It may be good to notify the user if something unexpected happens!
-        """
-        pass
+        # Assumption: If any actuation is unsuccessful, the TBM will stop moving
+        
+        # These boolean values will indicate whether or not the actuations were suucessful
+        act_request_forward = False
+        act_request_right = False
+        act_request_left = False
+        act_request_up = False
+        act_request_down = False
+
+
+       #The TBM will move forward as long as the current position is not
+       #equal to the desired position in the x direction. 
+        if self.desired_position[0] != 0:
+            while(current_position[0] != desired_position[0]):
+                act_request_forward = self.steering.move_forward()
+                self.update_current_position
+                if act_request_forward == False:
+                    print("Unable to move to desired x position")
+                    self.update_current_position
+                    return current_position == desired_position
+
+
+        required_y_distance = desired_position[1] - current_position[1]
+        if required_y_distance > 0:
+            act_request_right = self.steering.move_right(required_y_distance)
+        elif required_y_distance < 0:
+            act_request_left = self.steering.move_left(required_y_distance)
+        if act_request_left == False or act_request_right == False:
+            print("Unable to move to desired y position")
+            self.update_current_position
+            return current_position == desired_position
+            
+            
+        required_z_distance = desired_position[2] - current_position[2]
+        if required_z_distance > 0:
+            act_request_up = self.steering.move_up(required_z_distance)
+        elif required_z_distance < 0:
+            act_request_down = self.steering.move_down(required_z_distance)        
+        if act_request_up == False or act_request_down == False:
+            print("Unable to move to desired z position") 
+            self.update_current_position
+            return current_position == desired_position      
+
+        self.update_current_position
+        return current_position == desired_position
+        
+        
 
 
 # Code below is provided for you, YOU DO NOT NEED TO IMPLEMENT THIS

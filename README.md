@@ -1,2 +1,3 @@
 # recruiting-challenges
-Repository containing all paradigm student group recruiting challenges.
+Repository containing paradigm student group recruiting challenges.
+
